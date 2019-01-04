@@ -6,7 +6,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Starter Page</h1>
+            <h1 class="m-0 text-dark">Admin Dashboard</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -29,8 +29,7 @@
                 <h5 class="card-title">Card title</h5>
 
                 <p class="card-text">
-                  Some quick example text to build on the card title and make up the bulk of the card's
-                  content.
+                  <example-component></example-component>
                 </p>
 
                 <a href="#" class="card-link">Card link</a>
