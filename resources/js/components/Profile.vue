@@ -9,11 +9,11 @@
                         <h5 class="widget-user-desc">{{form.type}}</h5>
                     </div>
                     <div class="widget-user-image">
-                        <img class="img-circle" src="" alt="User Avatar">
+                        <img class="img-circle" :src="getProPic()" alt="User Avatar">
                     </div>
                     </div>
                     <!-- User detail content starts here -->
-                    <div class="card">
+                    <div class="card mt-5">
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link active show" href="#activity" data-toggle="tab">Activity</a></li>
@@ -87,7 +87,8 @@
                 type : '',
                 status : '',
                 image: ''
-                })
+                }),
+                isTempImage: false
             }
         },
         created() {
@@ -119,10 +120,16 @@
             },
             updateImage(e){
                 let file = e.target.files[0];
+                console.log('file array'+ e.target.files)
                 let reader = new FileReader();
                 //Check file size is greater than 2MB
                 console.log(file)
                 if(file['size'] < 2111775){
+                reader.onload = (file) => {
+                this.isTempImage = true
+                this.form.image = reader.result
+                this.getProPic()
+                }
                 reader.onloadend = (file) => {
                     this.form.image = reader.result
                 }
@@ -133,6 +140,13 @@
                        title: 'Ooops!!',
                        text: 'Your file is larger than 2 MB'
                    })
+                }
+            },
+            getProPic(){
+                if(this.isTempImage){
+                    return this.form.image
+                }else{
+                    return 'img/profile/'+this.form.image
                 }
             }
         },

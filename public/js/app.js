@@ -1936,7 +1936,8 @@ __webpack_require__.r(__webpack_exports__);
         type: '',
         status: '',
         image: ''
-      })
+      }),
+      isTempImage: false
     };
   },
   created: function created() {
@@ -1977,11 +1978,19 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       var file = e.target.files[0];
+      console.log('file array' + e.target.files);
       var reader = new FileReader(); //Check file size is greater than 2MB
 
       console.log(file);
 
       if (file['size'] < 2111775) {
+        reader.onload = function (file) {
+          _this3.isTempImage = true;
+          _this3.form.image = reader.result;
+
+          _this3.getProPic();
+        };
+
         reader.onloadend = function (file) {
           _this3.form.image = reader.result;
         };
@@ -1993,6 +2002,13 @@ __webpack_require__.r(__webpack_exports__);
           title: 'Ooops!!',
           text: 'Your file is larger than 2 MB'
         });
+      }
+    },
+    getProPic: function getProPic() {
+      if (this.isTempImage) {
+        return this.form.image;
+      } else {
+        return 'img/profile/' + this.form.image;
       }
     }
   },
@@ -59749,11 +59765,16 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "widget-user-image" }, [
+            _c("img", {
+              staticClass: "img-circle",
+              attrs: { src: _vm.getProPic(), alt: "User Avatar" }
+            })
+          ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "card" }, [
-          _vm._m(1),
+        _c("div", { staticClass: "card mt-5" }, [
+          _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("div", { staticClass: "tab-content" }, [
@@ -59951,17 +59972,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "widget-user-image" }, [
-      _c("img", {
-        staticClass: "img-circle",
-        attrs: { src: "", alt: "User Avatar" }
-      })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

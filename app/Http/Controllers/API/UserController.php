@@ -96,6 +96,11 @@ class UserController extends Controller
                 \Image::make($request->image)->save(public_path('img/profile/').$imagename);
                 // Merge/replace imagename with $request
                 $request->merge(['image' => $imagename]); 
+
+                $pastImage = public_path('img/profile/').$currentImage;
+                if(file_exists($pastImage)){
+                    unlink($pastImage);
+                }
         }
         // Check user requested password update.
         if(!empty($request->password)){
