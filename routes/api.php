@@ -21,3 +21,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  * Api Routes for users Crud
  */
 Route::apiResources(['user' => 'API\UserController']);
+
+/**
+ * Api Singletons for specific resources
+ */
+Route::get('profile','API\UserController@profile');
+Route::put('profile','API\UserController@updateProfile');
