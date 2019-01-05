@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
  * Api Routes for users Crud
  */
 Route::apiResources(['user' => 'API\UserController']);
+Route::apiResources(['perfume' => 'API\PerfumeController']);
 
 /**
  * Api Singletons for specific resources

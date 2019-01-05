@@ -27,12 +27,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
+                    <a href="{{url('/')}}" class="nav-link">Home</a>
                 </li>
             </ul>
 
             <!-- SEARCH FORM -->
-            <form class="form-inline ml-3">
+            {{-- <form class="form-inline ml-3">
                 <div class="input-group input-group-sm">
                     <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
@@ -41,10 +41,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         </button>
                     </div>
                 </div>
-            </form>
+            </form> --}}
 
             <!-- Right navbar links -->
-            <ul class="navbar-nav ml-auto">
+            {{-- <ul class="navbar-nav ml-auto">
                 <!-- Messages Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
@@ -133,7 +133,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <li class="nav-item">
                     <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i class="fa fa-th-large"></i></a>
                 </li>
-            </ul>
+            </ul> --}}
         </nav>
         <!-- /.navbar -->
 
@@ -154,7 +154,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <img src="{{asset('img/profile/'.Auth::user()->image)}}" class="img-circle elevation-2" alt="User Image">
                     </div>
                     <div class="info">
-                        <a href="#" class="d-block">{{Auth::user()->name}}</a>
+                        <a href="{{ url('admin/dashboard')}}" class="d-block">{{Auth::user()->name}}</a>
                     </div>
                 </div>
 
@@ -176,6 +176,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <i class="nav-icon fa fa-user blue"></i>
                                 <p>
                                     Profile
+                                </p>
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link to="/perfume" class="nav-link">
+                                <i class="nav-icon fas fa-wine-bottle green"></i>
+                                <p>
+                                    Perfume
                                 </p>
                             </router-link>
                         </li>

@@ -16,18 +16,18 @@
                     <div class="card mt-5">
                         <div class="card-header p-2">
                             <ul class="nav nav-pills">
-                            <li class="nav-item"><a class="nav-link active show" href="#activity" data-toggle="tab">Activity</a></li>
-                            <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
+                            <!-- <a class="nav-item"><a class="nav-link active show" href="#activity" data-toggle="tab">Activity</a></a> -->
+                            <li class="nav-item"><a class="nav-link active show" href="#settings" data-toggle="tab">Settings</a></li>
                             </ul>
                         </div><!-- /.card-header -->
                         <div class="card-body">
                             <div class="tab-content">
-                            <div class="tab-pane active show" id="activity">
+                            <!-- <div class="tab-pane active show" id="activity">
                                 
-                            </div>
+                            </div> -->
                             <!-- /.tab-pane -->
 
-                            <div class="tab-pane" id="settings">
+                            <div class="tab-pane active show" id="settings">
                                 <form class="form-horizontal">
                                 <div class="form-group">
                                     <div class="col-sm-10">

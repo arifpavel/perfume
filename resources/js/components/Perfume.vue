@@ -4,11 +4,11 @@
           <div class="col-md-12 mt-5">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Users</h3>
+                <h3 class="card-title">Pefumes</h3>
 
                 <div class="card-tools">
                   <button class="btn btn-success" @click="addUserModal()">
-                      <i class="fa fa-user-plus fa-fw"></i>Add New</button>
+                      <i class="fas fa-wine-bottle fa-fw"></i>Add New</button>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -17,22 +17,22 @@
                   <tbody><tr class="thead">
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Email</th>
+                    <th>Aroma</th>
                     <th>Type</th>
-                    <th>Status</th>
-                    <th>Joined At</th>
+                    <th>In Stock</th>
+                    <th>Added At</th>
                     <th>Action</th>
                   </tr>
-                  <tr v-for="user in users.data" :key="user.id">
-                    <td>{{user.id}}</td>
-                    <td>{{user.name | capitalize}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.type | capitalize}}</td>
-                    <td><span class="tag tag-success">{{user.status | capitalize}}</span></td>
-                    <td>{{user.created_at | dateformet}}</td>
+                  <tr v-for="perfume in perfumes.data" :key="perfume.id">
+                    <td>{{perfume.id}}</td>
+                    <td>{{perfume.name | capitalize}}</td>
+                    <td>{{perfume.aroma}}</td>
+                    <td>{{perfume.type | capitalize}}</td>
+                    <td><span class="tag tag-success">{{perfume.stock}}</span></td>
+                    <td>{{perfume.created_at | dateformet}}</td>
                     <td>
-                        <a href="#" @click="editUserModal(user)" v-if="$gate.isSuperAdmin()"><i class="fa fa-edit orange fa-fw"></i></a>
-                        <a href="#" @click="deleteuser(user.id)"><i class="fa fa-trash red"></i></a>
+                        <a href="#" @click="editUserModal(perfume)" v-if="$gate.isAdmin() || $gate.isSuperAdmin()"><i class="fa fa-edit orange fa-fw"></i></a>
+                        <a href="#" @click="deleteuser(perfume.id)"><i class="fa fa-trash red"></i></a>
                     </td>
                   </tr>
                   
@@ -40,7 +40,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                  <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                  <pagination :data="perfumes" @pagination-change-page="getResults"></pagination>
               </div>
             </div>
             <!-- /.card -->
@@ -52,47 +52,35 @@
             <div class="modal-content">
         <form @submit.prevent="editmode ? updateUser() : addUser()" @keydown="form.onKeydown($event)">
             <div class="modal-header">
-                <h5 v-show="!editmode" class="modal-title" id="exampleModalLongTitle">Add New User</h5>
-                <h5 v-show="editmode" class="modal-title" id="exampleModalLongTitle">Update User</h5>
+                <h5 v-show="!editmode" class="modal-title" id="exampleModalLongTitle">Add New Perfume</h5>
+                <h5 v-show="editmode" class="modal-title" id="exampleModalLongTitle">Update Perfume</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                    <div class="form-group">
-                    <input v-model="form.name" placeholder="Name of User" type="text" name="name"
+                    <div class="col-md-12">
+                        <img v-show="editmode" :src="getImage()" class="img-thumbnail rounded mx-auto d-block"  style="height:100px;width:100px;" alt="">
+                    </div>
+                    <div class="form-group mt-5">
+                    <input v-model="form.name" placeholder="Name of the Perfume" type="text" name="name"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('name') }">
                     <has-error :form="form" field="name"></has-error>
                     </div>
                     <div class="form-group">
-                    <input v-model="form.email" placeholder="Email" type="text" name="email"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                    <has-error :form="form" field="email"></has-error>
+                    <input v-model="form.aroma" placeholder="Aroma" type="text" name="aroma"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('aroma') }">
+                    <has-error :form="form" field="aroma"></has-error>
                     </div>
                     <div class="form-group">
-                    <input v-model="form.password" placeholder="Password" type="password" name="password"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                    <has-error :form="form" field="password"></has-error>
-                    </div>
-                    <div class="form-group">
-                    <select name="type" v-model="form.type" class="form-control" :class="{
-                        'is-invalid' : form.errors.has('type')
-                    }">
-                        <option value="">Select User Role</option>
-                        <option value="admin">Admin</option>
-                        <option value="user">User</option>
-                    </select>
+                    <input v-model="form.type" placeholder="Type" type="text" name="type"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('type') }">
                     <has-error :form="form" field="type"></has-error>
                     </div>
                     <div class="form-group">
-                    <select name="status" v-model="form.status" class="form-control" :class="{
-                        'is-invalid' : form.errors.has('status')
-                    }">
-                        <option value="">Select User Status</option>
-                        <option value="active">Active</option>
-                        <option value="blocked">Blocked</option>
-                    </select>
-                    <has-error :form="form" field="status"></has-error>
+                    <input v-model="form.stock" placeholder="stock" type="text" name="stock"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('stock') }">
+                    <has-error :form="form" field="stock"></has-error>
                     </div>
                 
             </div>
@@ -113,14 +101,14 @@
         data(){
             return {
             editmode : false,
-            users: [],
+            perfumes: [],
             form: new Form({
                 id : '',
                 name : '',
-                email : '',
-                password : '',
+                aroma : '',
                 type : '',
-                status : ''
+                stock : '',
+                image : ''
             })
             }
         },
@@ -130,31 +118,31 @@
                 this.form.reset();
                 $('#addNewUser').modal('show');
             },
-            editUserModal(user){
+            editUserModal(perfume){
                 this.editmode = true
                 this.form.reset();
-                this.form.fill(user);
+                this.form.fill(perfume);
                 $('#addNewUser').modal('show');
             },
             getUsers(){
-                axios.get('api/user').then(({data}) =>
+                axios.get('api/perfume').then(({data}) =>
                 {
-                    this.users = data
-                    console.log(this.users)
+                    this.perfumes = data
+                    console.log(this.perfumes)
                 })
             },
             addUser(){
                 this.$Progress.start();
                 // Submit the form via a POST request
-                this.form.post('api/user')
+                this.form.post('api/perfume')
                     .then(({ data }) => {
                         $('#addNewUser').modal('hide');
                         toast({
                             type: 'success',
-                            title: 'User created successfully'
+                            title: 'Perfume created successfully'
                             });
                         this.$Progress.finish();
-                        Fire.$emit('usercreated'); 
+                        Fire.$emit('perfumecreated'); 
                         console.log(data) 
                         })
                     .catch(({error}) => {
@@ -169,15 +157,16 @@
                 this.$Progress.start();
                 console.log(this.form.id)
                 //Submit the form via a PUT request
-                this.form.put('api/user/'+this.form.id)
+                this.form.put('api/perfume/'+this.form.id)
                     .then(({ data }) => {
                         $('#addNewUser').modal('hide');
                         toast({
                             type: 'success',
-                            title: 'User updated successfully'
+                            title: 'Perfume updated successfully'
                             });
                         this.$Progress.finish();
-                        Fire.$emit('usercreated'); 
+                        Fire.$emit('perfumecreated'); 
+                        console.log(data)
                         })
                     .catch(({error}) => {
                         toast({
@@ -185,6 +174,7 @@
                             title: 'There is some error!'
                             });
                         this.$Progress.fail();
+                        console.log(error)
                         });
             },
             deleteuser(id){
@@ -203,13 +193,13 @@
                 reverseButtons: true
                 }).then((result) => {
                 if(result.value){
-                this.form.delete('api/user/'+id).then(()=>{
+                this.form.delete('api/perfume/'+id).then(()=>{
                     Swal(
                     'Deleted!',
-                    'User has been deleted.',
+                    'Perfume has been deleted.',
                     'success'
                     )
-                    Fire.$emit('usercreated')
+                    Fire.$emit('perfumecreated')
                 }).catch(()=>{
                     Swal("Failed","There was something wrong","warning")
                 })
@@ -218,15 +208,18 @@
                 console.log(id);
             },
             getResults(page = 1){
-                axios.get('api/user?page=' + page)
+                axios.get('api/perfume?page=' + page)
                 .then(response => {
-                    this.users = response.data
+                    this.perfumes = response.data
                 })
+            },
+            getImage(){
+                return 'img/perfume/'+this.form.image
             }
         },
         created(){
             this.getUsers()
-            Fire.$on('usercreated',() => { 
+            Fire.$on('perfumecreated',() => { 
                 this.getUsers()
             })
         },
