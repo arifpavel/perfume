@@ -13,7 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <title>Perfume</title>
 
     <!-- Theme style -->
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -32,16 +32,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </ul>
 
             <!-- SEARCH FORM -->
-            {{-- <form class="form-inline ml-3">
+            <div class="form-inline ml-3">
                 <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                    <input @keyup="search" v-model="searchkey" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
                         <button class="btn btn-navbar" type="submit">
                             <i class="fa fa-search"></i>
                         </button>
                     </div>
                 </div>
-            </form> --}}
+            </div>
 
             <!-- Right navbar links -->
             {{-- <ul class="navbar-nav ml-auto">
@@ -140,8 +140,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
-                <img src="{{url('/img/logo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            <a href="{{url('/')}}" class="brand-link">
+                <img src="{{url('/img/logo.png')}}" alt="Logo" class="brand-image img-circle elevation-3"
                     style="opacity: .8">
                 <span class="brand-text font-weight-light">Perfume</span>
             </a>
@@ -282,8 +282,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
       window.user = @json(auth()->user())
     </script>
     @endauth
-    <!-- AdminLTE App -->
-    <script src="/js/app.js"></script>
+    <!-- Main App -->
+    <script src="{{ asset('js/app.js') }}"></script>
     
 </body>
 

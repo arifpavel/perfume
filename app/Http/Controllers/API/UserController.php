@@ -144,4 +144,24 @@ class UserController extends Controller
         $user->delete();
         return ['message' => 'User has been deleted.'];
     }
+
+    /**
+     * Get query string from api call
+     * Return user resources with matched by query
+     */
+    public function search(){
+        if( $search = \Request::get('q') ){
+            $users = User::where(function ($query) use ($search){
+                $query->where('name', 'LIKE', "%$search%")
+                ->orWhere('email', 'LIKE', "%$search%")
+                ->orWhere('type', 'LIKE', "%$search%")
+                ->orWhere('status', 'LIKE', "%$search%");
+            })->paginate(10);
+            return $users;
+        }
+        else{
+            return User::latest()->paginate(10);
+        }
+        
+    }
 }

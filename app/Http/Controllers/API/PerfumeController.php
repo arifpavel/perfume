@@ -14,7 +14,7 @@ class PerfumeController extends Controller
      * @return void
      */
     public function __construct(){
-        $this->middleware('auth:api');
+        $this->middleware('api');
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +23,7 @@ class PerfumeController extends Controller
      */
     public function index()
     {
-        return Perfume::latest()->paginate(2);
+        return Perfume::latest()->paginate(6);
     }
 
     /**
@@ -40,11 +40,20 @@ class PerfumeController extends Controller
             'type' => 'required',
             'stock' => 'required'
         ]);
+        if( $request->image){
+            $imagename = time().'.'. explode('/', explode(':', substr($request->image, 0, strpos(
+                $request->image, ';')))[1])[1];
+                // Save the image using image intervention package from base 64 image
+                \Image::make($request->image)->save(public_path('img/perfume/').$imagename);
+                // Merge/replace imagename with $request
+                $request->merge(['image' => $imagename]); 
+        }
         return Perfume::create([
             'name' => $request['name'],
             'aroma' => $request['aroma'],
             'type' => $request['type'],
-            'stock' => $request['stock']
+            'stock' => $request['stock'],
+            'image' => $request['image']
         ]);
     }
 
@@ -105,5 +114,52 @@ class PerfumeController extends Controller
         $perfume = Perfume::findOrFail($id);
         $perfume->delete();
         return ['message' => 'perfume has been deleted.'];
+    }
+
+    /**
+     * Get query string from api call
+     * Return user resources with matched by query
+     */
+    public function search(){
+        if( $search = \Request::get('q') ){
+            $perfumes = Perfume::where(function ($query) use ($search){
+                $query->where('name', 'LIKE', "%$search%")
+                ->orWhere('aroma', 'LIKE', "%$search%")
+                ->orWhere('type', 'LIKE', "%$search%")
+                ->orWhere('stock', 'LIKE', "%$search%");
+            })->paginate(6);
+            return $perfumes;
+        }
+        else{
+            return Perfume::latest()->paginate(6);
+        }
+        
+    }
+
+    /**
+     * Get query id from api call
+     * Return perfume resources with matched by aroma & type
+     */
+    public function searchFront(){
+        if( $search = \Request::get('q') ){
+            $type = Perfume::findOrFail($search);
+            $type = $type->type;
+            $perfumes = Perfume::where(function ($query) use ($type){
+                $query->where('type', 'LIKE', "%$type%");
+            })->paginate(6);
+            return $perfumes;
+        }
+        else{
+            return Perfume::latest()->paginate(6);
+        }
+        
+    }
+
+    /**
+     * Return all name resources
+     */
+    public function getAllName(){
+        //return Perfume::all()->toArray();     
+        return Perfume::all('name','id');     
     }
 }

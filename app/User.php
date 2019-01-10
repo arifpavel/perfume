@@ -21,6 +21,16 @@ class User extends Authenticatable
     ];
 
     /**
+     * The columns of the full text index
+     */
+    protected $searchable = [
+        'name',
+        'email',
+        'type',
+        'status'
+    ];
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array

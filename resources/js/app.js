@@ -95,10 +95,18 @@ Vue.component(
   require('./components/passport/PersonalAccessTokens.vue').default
 );
 
+/**
+ * Importing vue-multiselect & declaring globally
+ */
+import Multiselect from 'vue-multiselect'
+// register globally
+Vue.component('multiselect', Multiselect)
+
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('home-component', require('./components/Home.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -108,5 +116,24 @@ Vue.component(
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    data(){
+      return{
+        searchkey: '',
+        perfumeKey: ''
+      }
+    },
+    methods: {
+      //Using debounce from lodash to emit the event in every 1 sec
+      search: _.debounce(() => {
+        Fire.$emit('searching')
+      }, 1000),
+      searchPerfume: _.debounce(() => {
+        Fire.$emit('searchingPerfume')
+      }, 1000)
+    }
 });
+function newFunction() {
+  return 'searchkey';
+}
+

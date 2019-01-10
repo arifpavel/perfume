@@ -82,6 +82,11 @@
                         class="form-control" :class="{ 'is-invalid': form.errors.has('stock') }">
                     <has-error :form="form" field="stock"></has-error>
                     </div>
+                    <div class="form-group">
+                        <div class="col-sm-10">
+                        <input type="file" @change="updateImage" class="form-control" id="inputProfilePicture" placeholder="file" enctype="multipart/form-data">
+                        </div>
+                    </div>
                 
             </div>
             <div class="modal-footer">
@@ -109,7 +114,8 @@
                 type : '',
                 stock : '',
                 image : ''
-            })
+            }),
+            isTempImage: false
             }
         },
         methods: {
@@ -214,11 +220,49 @@
                 })
             },
             getImage(){
+                if(this.isTempImage){
+                    this.isTempImage = false
+                    return this.form.image
+                }else{
                 return 'img/perfume/'+this.form.image
+                }
+            },
+            updateImage(e){
+                let file = e.target.files[0];
+                console.log('file array'+ e.target.files)
+                let reader = new FileReader();
+                //Check file size is greater than 2MB
+                console.log(file)
+                if(file['size'] < 2111775){
+                reader.onload = (file) => {
+                this.isTempImage = true
+                this.form.image = reader.result
+                this.getImage()
+                }
+                reader.onloadend = (file) => {
+                    this.form.image = reader.result
+                }
+                reader.readAsDataURL(file);
+                }else{
+                   Swal({
+                       type: 'error',
+                       title: 'Ooops!!',
+                       text: 'Your file is larger than 2 MB'
+                   })
+                }
             }
         },
         created(){
             this.getUsers()
+            Fire.$on('searching', () => {
+                let search = this.$parent.searchkey
+                let vthis = this
+                axios.get('api/searchPerfume?q='+search)
+                .then((data)=>{
+                    vthis.perfumes = data.data
+                })
+                console.log(search)
+            })
             Fire.$on('perfumecreated',() => { 
                 this.getUsers()
             })

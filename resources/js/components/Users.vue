@@ -121,7 +121,7 @@
                 password : '',
                 type : '',
                 status : ''
-            })
+            }),
             }
         },
         methods: {
@@ -226,6 +226,19 @@
         },
         created(){
             this.getUsers()
+            Fire.$on('searching', () => {
+                let search = this.$parent.searchkey
+                let vthis = this
+                axios.get('api/searchUser?q='+search)
+                .then((data)=> {
+                    vthis.users = data.data
+                    console.log(data.data)
+                })
+                .catch((error) => {
+                    console.log('there are some error!')
+                })
+                //console.log(search)
+            })
             Fire.$on('usercreated',() => { 
                 this.getUsers()
             })

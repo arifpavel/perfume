@@ -28,3 +28,11 @@ Route::apiResources(['perfume' => 'API\PerfumeController']);
  */
 Route::get('profile','API\UserController@profile');
 Route::put('profile','API\UserController@updateProfile');
+
+/*
+* Api Singletons for search apis.
+*/
+Route::get('searchUser','API\UserController@search');
+Route::get('searchPerfume','API\PerfumeController@search');
+Route::get('getAllName','API\PerfumeController@getAllName');
+Route::get('search','API\PerfumeController@searchFront');
